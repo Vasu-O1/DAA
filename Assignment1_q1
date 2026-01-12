@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+int iterativeSearch(int arr[], int size, int target) {
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            return mid; // Found it! Return the index.
+        }
+
+        if (arr[mid] < target) {
+            left = mid + 1; // Target is higher, move the left boundary up.
+        } else {
+            right = mid - 1; // Target is lower, move the right boundary down.
+        }
+    }
+
+    return -1; // We exhausted the search and found nothing.
+}
+
+int recursiveSearch(int arr[], int left, int right, int target) {
+    if (left > right) {
+        return -1;
+    }
+
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == target) {
+        return mid;
+    }
+
+    if (arr[mid] > target) {
+        return recursiveSearch(arr, left, mid - 1, target);
+    } else {
+        return recursiveSearch(arr, mid + 1, right, target);
+    }
+}
+
+int main() {
+    int myNumbers[] = {10, 22, 35, 40, 45, 50, 80, 82, 90, 100};
+    
+    int n = sizeof(myNumbers) / sizeof(myNumbers[0]);
+    
+    int target;
+    cout << "Enter a number to search for: ";
+    cin >> target;
+
+    int result1 = iterativeSearch(myNumbers, n, target);
+
+    int result2 = recursiveSearch(myNumbers, 0, n - 1, target);
+
+    if (result1 != -1) {
+        cout << "Iterative: Found " << target << " at index " << result1 << endl;
+        cout << "Recursive: Found " << target << " at index " << result2 << endl;
+    } else {
+        cout << "The number " << target << " was not found in the array." << endl;
+    }
+
+    return 0;
+}
